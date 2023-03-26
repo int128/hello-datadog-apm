@@ -7,6 +7,12 @@ import (
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 )
 
+func do() {
+	span := tracer.StartSpan("run")
+	defer span.Finish()
+	log.Printf("Hello world")
+}
+
 func run() int {
 	log.SetFlags(log.Lmicroseconds | log.Lshortfile)
 	tracer.Start(
@@ -15,10 +21,9 @@ func run() int {
 	)
 	defer tracer.Stop()
 
-	span := tracer.StartSpan("run")
-	defer span.Finish()
-
-	log.Printf("Hello world")
+	for i := 0; i < 50; i++ {
+		do()
+	}
 	return 0
 }
 
