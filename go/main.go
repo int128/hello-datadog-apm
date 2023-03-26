@@ -1,17 +1,23 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
 
+	httptrace "gopkg.in/DataDog/dd-trace-go.v1/contrib/net/http"
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 )
 
-func do() error {
-	resp, err := http.Get("https://httpbin.org/get")
+func do(ctx context.Context) error {
+	req, err := http.NewRequestWithContext(ctx, "GET", "https://httpbin.org/get", nil)
+	if err != nil {
+		return fmt.Errorf("failed to request: %w", err)
+	}
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("failed to get: %w", err)
 	}
@@ -31,11 +37,13 @@ func run() int {
 		tracer.WithEnv("github-actions"),
 	)
 	defer tracer.Stop()
+	httptrace.WrapClient(http.DefaultClient)
 
 	var err error
-	span := tracer.StartSpan("run")
+	ctx := context.Background()
+	span, ctx := tracer.StartSpanFromContext(ctx, "run")
 	defer span.Finish(tracer.WithError(err))
-	err = do()
+	err = do(ctx)
 	if err != nil {
 		log.Printf("error: %s", err)
 		return 1
