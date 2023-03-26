@@ -12,6 +12,9 @@ func run() int {
 	tracer.Start(tracer.WithService("hello-datadog-apm"))
 	defer tracer.Stop()
 
+	span := tracer.StartSpan("run")
+	defer span.Finish()
+
 	log.Printf("Hello world")
 	return 0
 }
