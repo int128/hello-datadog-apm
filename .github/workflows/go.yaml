@@ -30,6 +30,7 @@ jobs:
       - uses: DataDog/agent-github-action@v1.3.1
         with:
           api_key: ${{ secrets.DATADOG_API_KEY }}
+          datadog_site: us5.datadoghq.com
           extra_env: DD_HOSTNAME=github.com
       - run: ./main
 
