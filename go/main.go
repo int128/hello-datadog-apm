@@ -9,7 +9,10 @@ import (
 
 func run() int {
 	log.SetFlags(log.Lmicroseconds | log.Lshortfile)
-	tracer.Start(tracer.WithService("hello-datadog-apm"))
+	tracer.Start(
+		tracer.WithService("hello-datadog-apm"),
+		tracer.WithEnv("github-actions"),
+	)
 	defer tracer.Stop()
 
 	span := tracer.StartSpan("run")
