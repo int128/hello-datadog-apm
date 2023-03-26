@@ -30,6 +30,7 @@ jobs:
       - uses: DataDog/agent-github-action@v1.3.1
         with:
           api_key: ${{ secrets.DATADOG_API_KEY }}
+          extra_env: DD_APM_ENABLED=true
       - run: ./main
 
   tidy:
