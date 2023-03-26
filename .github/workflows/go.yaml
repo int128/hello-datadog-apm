@@ -30,9 +30,9 @@ jobs:
       - uses: DataDog/agent-github-action@v1.3.1
         with:
           api_key: ${{ secrets.DATADOG_API_KEY }}
-          datadog_site: us5.datadoghq.com
-          extra_env: DD_HOSTNAME=github.com,DD_APM_ENABLED=true
       - run: ./main
+      # wait for flush
+      - run: sleep 30
 
   tidy:
     runs-on: ubuntu-latest
