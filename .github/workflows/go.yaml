@@ -31,7 +31,7 @@ jobs:
         with:
           api_key: ${{ secrets.DATADOG_API_KEY }}
           datadog_site: us5.datadoghq.com
-          extra_env: DD_HOSTNAME=github.com
+          extra_env: DD_HOSTNAME=github.com,DD_APM_ENABLED=true
       - run: ./main
 
   tidy:
