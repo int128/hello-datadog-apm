@@ -51,3 +51,6 @@ jobs:
     with:
       context: go
       image: ghcr.io/${{ github.repository }}/go
+    permissions:
+      contents: read
+      packages: write
