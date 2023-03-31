@@ -38,11 +38,18 @@ func run() int {
 	)
 	defer tracer.Stop()
 	httptrace.WrapClient(http.DefaultClient)
+	tracer.Flush()
+	log.Printf("Initialized tracer")
 
 	var err error
 	ctx := context.Background()
 	span, ctx := tracer.StartSpanFromContext(ctx, "run")
-	defer span.Finish(tracer.WithError(err))
+	defer func() {
+		span.Finish(tracer.WithError(err))
+		log.Printf("Flushing tracer")
+		tracer.Flush()
+		log.Printf("Flushed tracer")
+	}()
 	err = do(ctx)
 	if err != nil {
 		log.Printf("error: %s", err)
