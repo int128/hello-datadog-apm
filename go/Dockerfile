@@ -5,6 +5,7 @@ COPY go.* .
 RUN go mod download
 
 COPY main.go .
+ENV CGO_ENABLED=0
 RUN go build -o main main.go
 
 FROM gcr.io/distroless/static:nonroot

@@ -54,3 +54,11 @@ jobs:
     permissions:
       contents: read
       packages: write
+
+  test-image:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker run --rm 'ghcr.io/${{ github.repository }}/go@${{ needs.build.outputs.digest }}'
