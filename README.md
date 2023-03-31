@@ -1,5 +1,6 @@
-# hello-datadog-apm
-Hello world with Datadog APM.
+# hello-datadog-apm [![go](https://github.com/int128/hello-datadog-apm/actions/workflows/go.yaml/badge.svg)](https://github.com/int128/hello-datadog-apm/actions/workflows/go.yaml)
+
+This is an example application using Datadog APM.
 
 ## Local development
 
@@ -15,3 +16,7 @@ docker run --rm --name dd-agent \
   -p 127.0.0.1:8126:8126/tcp \
   gcr.io/datadoghq/agent:7
 ```
+
+## Run in GitHub Actions
+
+See [the workflow](.github/workflows/go.yaml).
