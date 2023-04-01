@@ -25,6 +25,7 @@ jobs:
         image: gcr.io/datadoghq/agent:7
         env:
           DD_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+          DD_HOSTNAME: github.com
         ports:
           - 8126:8126/tcp
           - 8125:8125/udp
