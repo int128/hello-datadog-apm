@@ -33,7 +33,7 @@ func do(ctx context.Context) error {
 
 func run() int {
 	log.SetFlags(log.Lmicroseconds | log.Lshortfile)
-	statsdClient, err := statsd.New("")
+	statsdClient, err := statsd.New("127.0.0.1:8125")
 	if err != nil {
 		log.Printf("failed to initialize statsd client: %s", err)
 	}
