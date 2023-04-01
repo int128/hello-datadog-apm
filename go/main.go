@@ -46,6 +46,7 @@ func run() int {
 	span, ctx := tracer.StartSpanFromContext(ctx, "run")
 	defer func() {
 		span.Finish(tracer.WithError(err))
+		waitForDatadogAgent()
 	}()
 	err = do(ctx)
 	if err != nil {
@@ -56,7 +57,7 @@ func run() int {
 }
 
 func waitForDatadogAgent() {
-	for i := 0; i < 120; i++ {
+	for i := 0; i < 30; i++ {
 		resp, err := http.Get("http://localhost:8126/info")
 		if resp != nil {
 			resp.Body.Close()
