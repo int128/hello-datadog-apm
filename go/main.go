@@ -32,23 +32,20 @@ func do(ctx context.Context) error {
 }
 
 func run() int {
-	log.SetFlags(log.Lmicroseconds | log.Lshortfile)
 	tracer.Start(
 		tracer.WithService("hello-datadog-apm"),
 		tracer.WithEnv("github-actions"),
 	)
-	defer tracer.Stop()
+	defer func() {
+		tracer.Stop()
+		time.Sleep(1 * time.Minute)
+	}()
 	httptrace.WrapClient(http.DefaultClient)
-	waitForDatadogAgent()
 
-	var err error
 	ctx := context.Background()
 	span, ctx := tracer.StartSpanFromContext(ctx, "run")
-	defer func() {
-		span.Finish(tracer.WithError(err))
-		waitForDatadogAgent()
-	}()
-	err = do(ctx)
+	err := do(ctx)
+	span.Finish(tracer.WithError(err))
 	if err != nil {
 		log.Printf("error: %s", err)
 		return 1
@@ -56,21 +53,9 @@ func run() int {
 	return 0
 }
 
-func waitForDatadogAgent() {
-	for i := 0; i < 30; i++ {
-		resp, err := http.Get("http://localhost:8126/info")
-		if resp != nil {
-			resp.Body.Close()
-		}
-		if err == nil && resp.StatusCode == 200 {
-			log.Printf("datadog-agent is ready")
-			return
-		}
-		log.Printf("Waiting for datadog-agent: %s", err)
-		time.Sleep(1 * time.Second)
-	}
-}
-
 func main() {
-	os.Exit(run())
+	log.SetFlags(log.Lmicroseconds | log.Lshortfile)
+	code := run()
+	log.Printf("Exiting with code %d", code)
+	os.Exit(code)
 }
