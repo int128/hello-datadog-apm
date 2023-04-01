@@ -32,6 +32,21 @@ func do(ctx context.Context) error {
 }
 
 func run() int {
+	for i := 0; i < 30; i++ {
+		resp, err := http.Get("http://127.0.0.1:8126/info")
+		if err != nil {
+			log.Printf("Waiting for datadog-agent: %s", err)
+			continue
+		}
+		resp.Body.Close()
+		if resp.StatusCode == 200 {
+			break
+		}
+		log.Printf("Waiting for datadog-agent: %d", resp.StatusCode)
+		time.Sleep(1 * time.Second)
+	}
+	time.Sleep(1 * time.Second)
+
 	tracer.Start(
 		tracer.WithService("hello-datadog-apm"),
 		tracer.WithEnv("github-actions"),
