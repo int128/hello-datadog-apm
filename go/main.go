@@ -7,8 +7,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
-	"github.com/DataDog/datadog-go/v5/statsd"
 	httptrace "gopkg.in/DataDog/dd-trace-go.v1/contrib/net/http"
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 )
@@ -33,29 +33,15 @@ func do(ctx context.Context) error {
 
 func run() int {
 	log.SetFlags(log.Lmicroseconds | log.Lshortfile)
-	statsdClient, err := statsd.New("127.0.0.1:8125")
-	if err != nil {
-		log.Printf("failed to initialize statsd client: %s", err)
-	}
-	defer func() {
-		log.Printf("Flushing statsd client")
-		if err := statsdClient.Flush(); err != nil {
-			log.Printf("failed to flush statsd client: %s", err)
-		}
-		if err := statsdClient.Close(); err != nil {
-			log.Printf("failed to close statsd client: %s", err)
-		}
-	}()
-	if err := statsdClient.Flush(); err != nil {
-		log.Printf("failed to flush statsd client: %s", err)
-	}
 	tracer.Start(
 		tracer.WithService("hello-datadog-apm"),
 		tracer.WithEnv("github-actions"),
 	)
 	defer tracer.Stop()
 	httptrace.WrapClient(http.DefaultClient)
+	waitForDatadogAgent()
 
+	var err error
 	ctx := context.Background()
 	span, ctx := tracer.StartSpanFromContext(ctx, "run")
 	defer func() {
@@ -67,6 +53,21 @@ func run() int {
 		return 1
 	}
 	return 0
+}
+
+func waitForDatadogAgent() {
+	for i := 0; i < 120; i++ {
+		resp, err := http.Get("http://localhost:8126/info")
+		if resp != nil {
+			resp.Body.Close()
+		}
+		if err == nil && resp.StatusCode == 200 {
+			log.Printf("datadog-agent is ready")
+			return
+		}
+		log.Printf("Waiting for datadog-agent: %s", err)
+		time.Sleep(1 * time.Second)
+	}
 }
 
 func main() {

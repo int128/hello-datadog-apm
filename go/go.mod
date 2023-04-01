@@ -2,15 +2,13 @@ module github.com/int128/hello-datadog-apm/go
 
 go 1.20
 
-require (
-	github.com/DataDog/datadog-go/v5 v5.3.0
-	gopkg.in/DataDog/dd-trace-go.v1 v1.48.0
-)
+require gopkg.in/DataDog/dd-trace-go.v1 v1.48.0
 
 require (
 	github.com/DataDog/datadog-agent/pkg/obfuscate v0.0.0-20211129110424-6491aa3bf583 // indirect
 	github.com/DataDog/datadog-agent/pkg/remoteconfig/state v0.42.0-rc.1 // indirect
 	github.com/DataDog/datadog-go v4.8.2+incompatible // indirect
+	github.com/DataDog/datadog-go/v5 v5.3.0 // indirect
 	github.com/DataDog/go-tuf v0.3.0--fix-localmeta-fork // indirect
 	github.com/DataDog/sketches-go v1.2.1 // indirect
 	github.com/Microsoft/go-winio v0.6.0 // indirect
