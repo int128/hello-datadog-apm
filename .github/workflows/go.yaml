@@ -31,8 +31,6 @@ jobs:
         with:
           api_key: ${{ secrets.DATADOG_API_KEY }}
       - run: ./main
-      # wait for flush
-      - run: sleep 30
 
   tidy:
     runs-on: ubuntu-latest

@@ -39,7 +39,7 @@ func run() int {
 	)
 	defer func() {
 		tracer.Stop()
-		time.Sleep(30 * time.Second)
+		time.Sleep(60 * time.Second)
 	}()
 	httptrace.WrapClient(http.DefaultClient)
 
