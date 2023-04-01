@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/DataDog/datadog-go/v5/statsd"
 	httptrace "gopkg.in/DataDog/dd-trace-go.v1/contrib/net/http"
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 )
@@ -32,23 +33,33 @@ func do(ctx context.Context) error {
 
 func run() int {
 	log.SetFlags(log.Lmicroseconds | log.Lshortfile)
+	statsdClient, err := statsd.New("")
+	if err != nil {
+		log.Printf("failed to initialize statsd client: %s", err)
+	}
+	defer func() {
+		log.Printf("Flushing statsd client")
+		if err := statsdClient.Flush(); err != nil {
+			log.Printf("failed to flush statsd client: %s", err)
+		}
+		if err := statsdClient.Close(); err != nil {
+			log.Printf("failed to close statsd client: %s", err)
+		}
+	}()
+	if err := statsdClient.Flush(); err != nil {
+		log.Printf("failed to flush statsd client: %s", err)
+	}
 	tracer.Start(
 		tracer.WithService("hello-datadog-apm"),
 		tracer.WithEnv("github-actions"),
 	)
 	defer tracer.Stop()
 	httptrace.WrapClient(http.DefaultClient)
-	tracer.Flush()
-	log.Printf("Initialized tracer")
 
-	var err error
 	ctx := context.Background()
 	span, ctx := tracer.StartSpanFromContext(ctx, "run")
 	defer func() {
 		span.Finish(tracer.WithError(err))
-		log.Printf("Flushing tracer")
-		tracer.Flush()
-		log.Printf("Flushed tracer")
 	}()
 	err = do(ctx)
 	if err != nil {
