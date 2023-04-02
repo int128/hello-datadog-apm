@@ -32,11 +32,10 @@ func do(ctx context.Context) error {
 }
 
 func run() int {
-	time.Sleep(30 * time.Second)
 	tracer.Start(tracer.WithService("hello-datadog-apm"))
 	defer func() {
 		tracer.Stop()
-		time.Sleep(60 * time.Second)
+		time.Sleep(90 * time.Second)
 	}()
 	httptrace.WrapClient(http.DefaultClient)
 
