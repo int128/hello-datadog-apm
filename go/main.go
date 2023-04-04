@@ -45,7 +45,6 @@ func run() int {
 	tracer.Start(tracer.WithService("hello-datadog-apm"))
 	defer func() {
 		tracer.Stop()
-		time.Sleep(90 * time.Second)
 	}()
 	httptrace.WrapClient(http.DefaultClient)
 
