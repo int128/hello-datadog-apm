@@ -32,11 +32,20 @@ func getContent(ctx context.Context) error {
 }
 
 func do(ctx context.Context) error {
-	for i := 0; i < 10; i++ {
-		if err := getContent(ctx); err != nil {
-			return fmt.Errorf("failed to get content: %w", err)
-		}
-		time.Sleep(10 * time.Second)
+	if err := getContent(ctx); err != nil {
+		return fmt.Errorf("failed to get content: %w", err)
+	}
+	time.Sleep(10 * time.Second)
+	if err := getContent(ctx); err != nil {
+		return fmt.Errorf("failed to get content: %w", err)
+	}
+	time.Sleep(10 * time.Second)
+	if err := getContent(ctx); err != nil {
+		return fmt.Errorf("failed to get content: %w", err)
+	}
+	time.Sleep(10 * time.Second)
+	if err := getContent(ctx); err != nil {
+		return fmt.Errorf("failed to get content: %w", err)
 	}
 	return nil
 }
