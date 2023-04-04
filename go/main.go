@@ -13,7 +13,7 @@ import (
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 )
 
-func do(ctx context.Context) error {
+func getContent(ctx context.Context) error {
 	req, err := http.NewRequestWithContext(ctx, "GET", "https://httpbin.org/get", nil)
 	if err != nil {
 		return fmt.Errorf("failed to request: %w", err)
@@ -28,6 +28,16 @@ func do(ctx context.Context) error {
 		return fmt.Errorf("failed to read: %w", err)
 	}
 	log.Printf("got: %s", b)
+	return nil
+}
+
+func do(ctx context.Context) error {
+	for i := 0; i < 10; i++ {
+		if err := getContent(ctx); err != nil {
+			return fmt.Errorf("failed to get content: %w", err)
+		}
+		time.Sleep(10 * time.Second)
+	}
 	return nil
 }
 
