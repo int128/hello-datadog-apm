@@ -35,18 +35,6 @@ func do(ctx context.Context) error {
 	if err := getContent(ctx); err != nil {
 		return fmt.Errorf("failed to get content: %w", err)
 	}
-	time.Sleep(10 * time.Second)
-	if err := getContent(ctx); err != nil {
-		return fmt.Errorf("failed to get content: %w", err)
-	}
-	time.Sleep(10 * time.Second)
-	if err := getContent(ctx); err != nil {
-		return fmt.Errorf("failed to get content: %w", err)
-	}
-	time.Sleep(10 * time.Second)
-	if err := getContent(ctx); err != nil {
-		return fmt.Errorf("failed to get content: %w", err)
-	}
 	return nil
 }
 
