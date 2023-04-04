@@ -42,11 +42,9 @@ func do(ctx context.Context) error {
 }
 
 func run() int {
-	time.Sleep(30 * time.Second)
 	tracer.Start(tracer.WithService("hello-datadog-apm"))
 	defer func() {
 		tracer.Stop()
-		time.Sleep(60 * time.Second)
 	}()
 	httptrace.WrapClient(http.DefaultClient)
 
@@ -64,6 +62,8 @@ func run() int {
 func main() {
 	log.SetFlags(log.Lmicroseconds | log.Lshortfile)
 	code := run()
+	log.Printf("Exit with code %d after 10m", code)
+	time.Sleep(10 * time.Minute)
 	log.Printf("Exiting with code %d", code)
 	os.Exit(code)
 }
