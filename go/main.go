@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	httptrace "gopkg.in/DataDog/dd-trace-go.v1/contrib/net/http"
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
@@ -41,6 +42,7 @@ func run() int {
 	tracer.Start(tracer.WithService("hello-datadog-apm"))
 	defer func() {
 		tracer.Stop()
+		time.Sleep(30 * time.Second)
 	}()
 	httptrace.WrapClient(http.DefaultClient)
 
