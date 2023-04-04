@@ -51,6 +51,7 @@ func do(ctx context.Context) error {
 }
 
 func run() int {
+	log.SetFlags(log.Lmicroseconds | log.Lshortfile)
 	tracer.Start(tracer.WithService("hello-datadog-apm"))
 	defer func() {
 		tracer.Stop()
@@ -69,8 +70,5 @@ func run() int {
 }
 
 func main() {
-	log.SetFlags(log.Lmicroseconds | log.Lshortfile)
-	code := run()
-	log.Printf("Exiting with code %d", code)
-	os.Exit(code)
+	os.Exit(run())
 }
