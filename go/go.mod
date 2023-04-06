@@ -2,7 +2,7 @@ module github.com/int128/hello-datadog-apm/go
 
 go 1.20
 
-require gopkg.in/DataDog/dd-trace-go.v1 v1.49.0
+require gopkg.in/DataDog/dd-trace-go.v1 v1.49.1
 
 require (
 	github.com/DataDog/datadog-agent/pkg/obfuscate v0.43.0 // indirect
