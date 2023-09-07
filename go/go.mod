@@ -2,7 +2,7 @@ module github.com/int128/hello-datadog-apm/go
 
 go 1.20
 
-require gopkg.in/DataDog/dd-trace-go.v1 v1.54.0
+require gopkg.in/DataDog/dd-trace-go.v1 v1.54.1
 
 require (
 	github.com/DataDog/appsec-internal-go v1.0.0 // indirect
