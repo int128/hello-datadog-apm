@@ -1,8 +1,10 @@
 module github.com/int128/hello-datadog-apm/go
 
-go 1.20
+go 1.21
 
-require gopkg.in/DataDog/dd-trace-go.v1 v1.65.1
+toolchain go1.22.5
+
+require gopkg.in/DataDog/dd-trace-go.v1 v1.66.0
 
 require (
 	github.com/DataDog/appsec-internal-go v1.6.0 // indirect
@@ -29,10 +31,10 @@ require (
 	github.com/secure-systems-lab/go-securesystemslib v0.7.0 // indirect
 	github.com/tinylib/msgp v1.1.8 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
-	golang.org/x/mod v0.12.0 // indirect
+	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/sys v0.20.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
-	golang.org/x/tools v0.12.1-0.20230815132531-74c255bcf846 // indirect
-	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
+	golang.org/x/tools v0.16.1 // indirect
+	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 )
