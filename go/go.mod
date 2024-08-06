@@ -2,7 +2,7 @@ module github.com/int128/hello-datadog-apm/go
 
 go 1.21
 
-toolchain go1.22.5
+toolchain go1.22.6
 
 require gopkg.in/DataDog/dd-trace-go.v1 v1.66.0
 
